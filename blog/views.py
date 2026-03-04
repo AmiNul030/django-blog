@@ -8,7 +8,7 @@ def Post_list(request):
 
 def Post_detail(request,slug):
     post=get_object_or_404(Post,slug=slug)
-    comments=Post.comments.all().order_by("-created_at")
+    comments=post.comments.all().order_by("-created_at")
 
     if request.method=="POST":
         form=CommentForm(request.POST)

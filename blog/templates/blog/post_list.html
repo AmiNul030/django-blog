@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+{% block content %}
+
+<h1 class="h4 mb-3">Latest Posts</h1>
+
+<div class="list-group">
+  {% for post in posts %}
+    <a class="list-group-item list-group-item-action" href="{% url 'post_detail' post.slug %}">
+      <div class="d-flex justify-content-between">
+        <div class="fw-semibold">{{ post.title }}</div>
+        <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
+      </div>
+    </a>
+  {% empty %}
+    <div class="text-muted">No posts yet. Add some from admin.</div>
+  {% endfor %}
+</div>
+
+{% endblock %}
