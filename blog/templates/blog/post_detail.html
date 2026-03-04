@@ -3,47 +3,76 @@
 
 <a class="btn btn-outline-secondary btn-sm mb-3" href="{% url 'post_list' %}">← Back</a>
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h1 class="h4">{{ post.title }}</h1>
-    <div class="text-muted small mb-3">{{ post.created_at|date:"M d, Y" }}</div>
-    <div style="white-space: pre-line;">{{ post.body }}</div>
-  </div>
-</div>
-
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="h6">Add a comment</h2>
-
-    <form method="post">
-      {% csrf_token %}
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        {{ form.name }}
+<div class="row g-3">
+  <!-- Main -->
+  <div class="col-lg-8">
+    <div class="card soft-shadow mb-3">
+      <div class="card-body">
+        <h1 class="h4">{{ post.title }}</h1>
+        <div class="muted small mb-3">{{ post.created_at|date:"M d, Y" }}</div>
+        <div style="white-space: pre-line;">{{ post.body }}</div>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Comment</label>
-        {{ form.body }}
-      </div>
-      <button class="btn btn-primary">Post Comment</button>
-    </form>
-  </div>
-</div>
-
-<h2 class="h6 mb-2">Comments ({{ comments|length }})</h2>
-
-<div class="list-group">
-  {% for c in comments %}
-    <div class="list-group-item">
-      <div class="d-flex justify-content-between">
-        <div class="fw-semibold">{{ c.name }}</div>
-        <small class="text-muted">{{ c.created_at|date:"M d, Y H:i" }}</small>
-      </div>
-      <div class="mt-2" style="white-space: pre-line;">{{ c.body }}</div>
     </div>
-  {% empty %}
-    <div class="text-muted">No comments yet.</div>
-  {% endfor %}
+
+    <!-- Comment form -->
+    <div class="card soft-shadow mb-3">
+      <div class="card-body">
+        <h2 class="h6 mb-3">Add a comment</h2>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            {{ form.name }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Comment</label>
+            {{ form.body }}
+          </div>
+          <button class="btn btn-primary">Post Comment</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Comments -->
+    <div class="card soft-shadow">
+      <div class="card-body">
+        <h2 class="h6 mb-3">Comments ({{ comments|length }})</h2>
+
+        {% for c in comments %}
+          <div class="border rounded-3 p-3 mb-2 bg-white">
+            <div class="d-flex justify-content-between">
+              <div class="fw-semibold">{{ c.name }}</div>
+              <small class="muted">{{ c.created_at|date:"M d, Y H:i" }}</small>
+            </div>
+            <div class="mt-2" style="white-space: pre-line;">{{ c.body }}</div>
+          </div>
+        {% empty %}
+          <div class="muted">No comments yet.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="col-lg-4">
+    <div class="card soft-shadow">
+      <div class="card-body">
+        <h2 class="h6 mb-3">Recent posts</h2>
+        <div class="list-group">
+          {% for p in recent_posts %}
+            <a class="list-group-item list-group-item-action" href="{% url 'post_detail' p.slug %}">
+              <div class="fw-semibold">{{ p.title }}</div>
+              <small class="muted">{{ p.created_at|date:"M d" }}</small>
+            </a>
+          {% empty %}
+            <div class="muted">No other posts.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 {% endblock %}
