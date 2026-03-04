@@ -15,7 +15,7 @@ def Post_list(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, "blog/post_list.html", {
-        "posts": page_obj,        # keep your template loop working
+        "posts": page_obj,     
         "page_obj": page_obj,
     })
 
